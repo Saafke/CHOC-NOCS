@@ -1,116 +1,110 @@
-# Towards Category-level 6D Pose Estimation for Human-to-Robot Handovers of Handheld Containers for Food and Drinks
+# Model code
 
-### eXplainable AI - feature branch
-
-xxx
+## A Mixed-Reality Dataset for Category-level 6D Pose and Size Estimation of Hand-occluded Containers
 
 The code is adapted from [Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation](https://github.com/hughw19/NOCS_CVPR2019/).
-Open-Images is the default branch.
 
 ## Table of Contents
 
 1. [Installation](#installation)
     1. [Requirements](#requirements)
     2. [Instructions](#instructions)
-2. [Known issues](#known-issues)
-3. [Enquiries, Question and Comments](#enquiries-question-and-comments)
-4. [Licence](#licence)
+2. [Running demo](#demo)
+3. [Training](#training)
+4. [Known issues](#issues)
+5. [Enquiries, Question and Comments](#enquiries-question-and-comments)
+6. [Licence](#licence)
 
-## Installation
+## Installation <a name="installation"></a>
 
+### Requirements <a name="requirements"></a>
 
-### Requirements
-
-* Hardware:
-    - CUDA 10.0 & cuDNN 7.41
+This code has been tested on an Ubuntu 18.04 machine, CUDA 11.6 and CUDNN XXX, with the following libraries.
 
 * Software/libraries:   
     - Python 3.5
     - Tensorflow 1.14.0
     - Keras 2.3.0
     - Anaconda/Miniconda
-    - libffi-dev
     - Open3D
 
+### Instructions <a name="instructions"></a>
 
-### Instructions
-
-Preliminary:
+1. Install the following essentials:
 ```
 sudo apt-get update
 sudo apt-get install build-essential libssl-dev libffi-dev python-dev
 ```
 
-1. Install Anaconda or Miniconda (please follow: https://docs.conda.io/en/latest/miniconda.html#linux-installers)
+2. Setup the conda environment (optional but strongly recommended):
 
-
-2. Setup the conda environment
+Install Anaconda or Miniconda (please follow: https://docs.conda.io/en/latest/miniconda.html#linux-installers).
 ```
-conda create --name CoPE python=3.5
-conda activate CoPE
+conda create --name choc-nocs-env python=3.5
+conda activate choc-nocs-env
 
 pip install --upgrade pip
 
-pip install tensorflow=1.14 keras==2.3.0
-
+pip install tensorflow-gpu==1.14.0 keras==2.3.0
 ```
 
-Additional dependencis
+3. Install the following dependencies:
 ```
 python3.5 -m pip install opencv-python moviepy open3d scipy scikit-image cython "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
 ```
 
-3. Verify install with CPU
+4. Verify install with CPU
 ```
 python3 -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
-
 ```
 
-See also tensorflow installation guide [here](https://www.tensorflow.org/install/pip).
+## Running demo <a name="demo"></a>
+You can use the demo to run the model on your own RGB(-D optional) images. First, download the trained model from here (ADD LINK). 
 
-
-
-## Running a demo
-Download the trained model from here.
-
-Single RGB image
+The general command to run the demo is:
 ```
-python demo.py --model_type C --ckpt_path <path-to-trained-model> --rgb ./000001.png
+python demo.py --ckpt_path <path_to_model> --input_folder <path_to_inputs> --pp <post-processing_technique> --draw 
 ```
 
-RGB video
+Arguments:
+
+- _ckpt\_path_: local path to the trained model (.h5 format)
+- _input\_folder_ : local path to the input folder
+- _output\_folder_ : local path to the desired output folder; if unspecified it will save in _input\_folder_ > _output_
+- _pp_: post-processing technique to compute the 6D pose, _umeyama_ or _epnp_ (default: _umeyama_)
+- _draw_: boolean flag to visualise the results
+
+The input folder should be structured as follows (note that depth is optional):
+
 ```
-python demo.py --model_type C --ckpt_path <path-to-trained-model> --model_type C --video ./sample_video.mp4
+input_folder
+  |--rgb
+  |   |--0001.png
+  |   |--0002.png
+  |   | ...
+  |--depth
+  |   |--0001.png
+  |   |--0002.png
+  |   | ...
 ```
 
-## Arguments
+We provide a sample in [_sample\_folder_](sample_folder).
 
-### Model modes
-| ID | COORDS |
-|----|--------|
-|  0 |    -   |
-|  1 |    X   |
-
-* Model 0 should correspond to Mask R-CNN in principle
-* Model 1 should correspond to NOCS in principle
-
-
-## Training
+## Training <a name="training"></a>
 ```
-# Train a new model from pretrained COCO weight
 python3 train.py
 ```
 
-## Known issues
+## Known issues <a name="issues"></a>
 
 * Python 3.5 reached the end of its life on September 13th, 2020 [DEPRECATION]
 
 
-## Enquiries, Question and Comments
+## Enquiries, Question and Comments <a name="enquiries-question-and-comments"></a>
 
 If you have any further enquiries, question, or comments, or you would like to file a bug report or a feature request, use the Github issue tracker. 
 
 
-## Licence
+## Licence <a name="license"></a>
 
 This work is licensed under the MIT License. To view a copy of this license, see [LICENSE](LICENSE).
