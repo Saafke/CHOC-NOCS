@@ -502,38 +502,12 @@ def compute_RT_degree_cm_symmetry(RT_1, RT_2, class_name):
 	result = np.array([theta, shift])
 	return result
 
-# TEST IT
-# for i in range(1,138241):
-
-#     image_index = "{:06d}".format(i)
-
-#     foldername = image_index_to_batch_folder(image_index)
-
-#     print("I: {}, image_index: {}, foldername: {}".format(i, image_index, foldername))
-
-
-# theta = math.radians(90)
-# mat_x = np.array( [ [1, 0,              0            ],
-#                     [0, np.cos(theta), -np.sin(theta)],
-#                     [0, np.sin(theta),  np.cos(theta)]])
-
-# mat_y = np.array( [ [ np.cos(theta), 0, np.sin(theta)],
-#                     [ 0,             1, 0            ],
-#                     [-np.sin(theta), 0, np.cos(theta)]])
-
-# mat_z = np.array( [ [np.cos(theta), -np.sin(theta), 0],
-#                     [np.sin(theta),  np.cos(theta), 0],
-#                     [0,              0,             1]])
-
-# TODO:
-# # - how can i get the original point-cloud?
-# with open("/media/DATA/SOM_renderer_DATA/objects/object_datastructure.json", 'r') as f:
-#     objects_info = json.load(f)
-# object_id = image_info["object_id"]
-# object_string = objects_info["objects"][object_id]["shapenet_name"]
-# print(object_string)
-# og_mesh = o3d.io.read_triangle_mesh( os.path.join("/media/DATA/SOM_renderer_DATA/objects/centered", "{}.glb".format(object_string)))
-# og_mesh.scale(1000, center=og_mesh.get_center())
-# pcd = og_mesh.sample_points_poisson_disk(number_of_points=10000)
-# ppp = np.asarray(pcd.points) * 1000
-
+def get_avg_scale_factor(class_id):
+	s = {	
+			0 : -1, 				# background
+			1 : 263.975385487663,   # box
+			2 : 145.58462366809738, # nonstem
+			3 : 156.92298518478205, # stem
+			4 : -1					# person
+	}
+	return s[class_id]

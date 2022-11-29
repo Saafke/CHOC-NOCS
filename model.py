@@ -4002,22 +4002,13 @@ class MaskRCNN():
         mrcnn_mask, mrcnn_coord_x, mrcnn_coord_y, mrcnn_coord_z, \
         rois, rpn_class, rpn_bbox = \
             self.keras_model.predict([molded_images, image_metas], verbose=0)
-        
-        # Process detections
-        #max_coord_x = np.amax(mrcnn_coord_x)
-        #max_coord_y = np.amax(mrcnn_coord_y)
-        #max_coord_z = np.amax(mrcnn_coord_z)
-
-        #print('predict result:')
-        #print(max_coord_x, max_coord_y, max_coord_z)
-
         mrcnn_coord = np.stack([mrcnn_coord_x, mrcnn_coord_y, mrcnn_coord_z], axis = -1)
         
         results = []
         for i, image in enumerate(images):
             final_rois, final_class_ids, final_scores, final_masks, final_coords =\
-                self.unmold_detections_viz(detections[i], mrcnn_mask[i], mrcnn_coord[i],
-                                        image.shape, windows[i], mrcnn_class[i])
+                self.unmold_detections(detections[i], mrcnn_mask[i], mrcnn_coord[i],
+                                        image.shape, windows[i])
             results.append({
                 "rois": final_rois,
                 "class_ids": final_class_ids,

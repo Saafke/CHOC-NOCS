@@ -166,7 +166,7 @@ for pred_file in network_preds:
                                     color, # RGB
                                     thickness) # thickness
                 cntr += 1
-            # # VIS POSE - axes TODO: fix this
+            # VIS POSE
             #xyz_axis = np.array([[0.5, 0.5, 0.5], [0.5, 0.5, 0.75], [0.5, 0.75, 0.5], [0.75, 0.5, 0.5]]).transpose()
             xyz_axis = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, m], [0.0, m, 0.0], [m, 0.0, 0.0]]).transpose()
             axes, _ = cv2.projectPoints(xyz_axis, rvec, tvec, u_e.get_intrinsics(), distCoeffs=None)

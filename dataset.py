@@ -92,7 +92,7 @@ class NocsClasses():
         return self.coco_cls_ids
 
 
-class SomClasses():
+class ChocClasses():
     def __init__(self):
         self.coco_names = coco_names
         self.synset_names = ['BG', #0
@@ -1143,11 +1143,11 @@ class NOCSDataset(Dataset):
 ##############################################################################
 ##############################################################################
 
-class SOMDataset(Dataset):
-    """Generates the NOCS dataset.
+class CHOCDataset(Dataset):
+    """Generates the CHOC dataset.
     """
     def __init__(self, synset_names, subset, config=Config()):
-        self.datadir = "/media/weber/Ubuntu2/ubuntu2/synthetic/"
+        self.datadir = ""
         self._image_ids = []
         self.image_info = []
         
@@ -1169,37 +1169,12 @@ class SOMDataset(Dataset):
                 continue
             self.add_class("BG", i, obj_name)  ## class id starts with 1 
 
-    def load_SOM_scenes(self, dataset_dir, subtypes, subset, if_calculate_mean=False, sort=True):
-        """Load subsets of the SOM dataset.
-        dataset_dir: The root directory of the SOM dataset.
+    def load_CHOC_scenes(self, dataset_dir, subtypes, subset, if_calculate_mean=False, sort=True):
+        """
+        Load subsets of the CHOC dataset.
+        dataset_dir: The root directory of the CHOC dataset.
         subset: What to load (train, val)
         if_calculate_mean: if calculate the mean color of the images in this dataset
-
-        som
-        |
-        ----hand
-            |
-            ----depth
-                |batches
-            ----info
-                |batches
-            ----mask
-                |batches
-            ----nocs
-                |batches
-            ----rgb
-        ----no_hand
-            |
-            ----depth
-                |batches
-            ----info
-                |batches
-            ----mask
-                |batches
-            ----nocs
-                |batches
-            ----rgb
-                |batches
         """
         
         # When loading a specific subset, only pick the images with the correct object ID's.
@@ -1231,7 +1206,7 @@ class SOMDataset(Dataset):
         total_im_counter = 0
 
         # Set data source
-        source = "SOM"
+        source = "CHOC"
 
         # How many images currently in the dataset
         num_images_before_load = len(self.image_info)
@@ -1475,6 +1450,47 @@ class SOMDataset(Dataset):
         self.source_image_ids[source] = np.arange(num_images_before_load, num_images_after_load)
         print('{} images are loaded into the dataset from {}.'.format(num_images_after_load - num_images_before_load, source))  
 
+    def load_folder(self, folder):
+        """
+        """
+        rgb_folder = os.path.join(folder, 'rgb')
+        depth_folder = os.path.join(folder, 'depth')
+
+        rgb_images = os.listdir(rgb_folder)
+
+        source = "demo"
+        num_images_before_load = len(self.image_info)
+        im_count = 0
+
+        for im in rgb_images:
+            
+            rgb_image = os.path.join(rgb_folder, im)
+            depth_image = ""
+            if os.path.exists(depth_folder):
+                depth_image = os.path.join(depth_folder, im)
+            
+            color_path = rgb_image
+            depth_path = depth_image 
+            nocs_path = None
+            mask_path = None
+            width = self.config.IMAGE_MAX_DIM
+            height = self.config.IMAGE_MIN_DIM
+            
+            self.add_image(
+                source=source,
+                image_id=im_count,
+                path=color_path,
+                depthpath=depth_path,
+                nocspath=nocs_path,
+                maskpath=mask_path,
+                width=width,
+                height=height)
+            im_count += 1
+
+        num_images_after_load = len(self.image_info)
+        self.source_image_ids[source] = np.arange(num_images_before_load, num_images_after_load)
+        print('{} images are loaded into the dataset from {}.'.format(num_images_after_load - num_images_before_load, source))
+
     def load_rgb_images(self, folder):
 
         images = os.listdir(folder)
@@ -1536,7 +1552,6 @@ class SOMDataset(Dataset):
         num_images_after_load = len(self.image_info)
         self.source_image_ids[source] = np.arange(num_images_before_load, num_images_after_load)
         print('{} images are loaded into the dataset from {}.'.format(num_images_after_load - num_images_before_load, source))        
-
 
     def load_video(self, video_path):
         """Load a subset of the CORSMAL dataset.
@@ -1741,7 +1756,7 @@ class SOMDataset(Dataset):
         Typically this function loads the image from a file.
         """
         info = self.image_info[image_id]
-        if info["source"] in ["SOM", "Real", "Corsmal"]:
+        if info["source"] in ["SOM", "Real", "Corsmal", "demo"]:
             image_path = info["path"]
             assert os.path.exists(image_path), "{} is missing".format(image_path)
 
@@ -1765,10 +1780,9 @@ class SOMDataset(Dataset):
         """
         info = self.image_info[image_id]
 
-        if info["source"] in ["SOM", "Real", "Corsmal"]:
+        if info["source"] in ["SOM", "Real", "Corsmal", "demo"] and info["depthpath"] != "":
             depth_path = info["depthpath"]
             depth = cv2.imread(depth_path, -1)
-
             if len(depth.shape) == 3:
                 # This is encoded depth image, let's convert
                 depth16 = np.uint16(depth[:, :, 1]*256) + np.uint16(depth[:, :, 2]) # NOTE: RGB is actually BGR in opencv

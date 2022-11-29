@@ -20,89 +20,13 @@ import keras
 from config import Config
 import utils
 import model as modellib
-from dataset import NOCSDataset, SOMDataset, NocsClasses, SomClasses
+from dataset import NOCSDataset, CHOCDataset, NocsClasses, ChocClasses
 
 # Suppress 'Future deprecation' warnings
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-
-# class ScenesConfig(Config):
-#     """Configuration for training on the toy shapes dataset.
-#     Derives from the base Config class and overrides values specific
-#     to the toy shapes dataset.
-#     """
-#     # Give the configuration a recognizable name
-#     NAME = "ShapeNetTOI"
-#     #OBJ_MODEL_DIR = os.path.join(ROOT_DIR, 'data', 'obj_models')
-#     OBJ_MODEL_DIR = "/media/DATA/SNOCS/obj_models"
-#     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
-#     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
-#     GPU_COUNT = 1
-#     IMAGES_PER_GPU = 1
-
-#     # Number of classes (including background)
-#     NUM_CLASSES = 1 + 4  # background + 6 object categories
-#     MEAN_PIXEL = np.array([[ 120.66209412, 114.70348358, 105.81269836]])
-
-#     IMAGE_MIN_DIM = 480
-#     IMAGE_MAX_DIM = 640
-
-#     RPN_ANCHOR_SCALES = (16, 32, 48, 64, 128)  # anchor side in pixels
-
-#     # Reduce training ROIs per image because the images are small and have
-#     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-#     TRAIN_ROIS_PER_IMAGE = 64
-
-#     # Use a small epoch since the data is simple
-#     STEPS_PER_EPOCH = 1000
-
-#     # use small validation steps since the epoch is small
-#     VALIDATION_STEPS = 50
-
-#     WEIGHT_DECAY = 0.0001
-#     LEARNING_RATE = 0.001
-#     LEARNING_MOMENTUM = 0.9
-
-#     COORD_LOSS_SCALE = 1
-    
-#     COORD_USE_BINS = True
-#     if COORD_USE_BINS:
-#          COORD_NUM_BINS = 32
-#     else:
-#         COORD_REGRESS_LOSS   = 'Soft_L1'
-
-#     COORD_SPAT_REG_SCALE = 0.5
-   
-#     COORD_SHARE_WEIGHTS = False
-#     COORD_USE_DELTA = False
-
-#     COORD_POOL_SIZE = 14
-#     COORD_SHAPE = [28, 28]
-
-#     USE_BN = True
-# #     if COORD_SHARE_WEIGHTS:
-# #         USE_BN = False
-
-#     USE_SYMMETRY_LOSS = True
-#     USE_SMOOTHING_REG = False # Boolean to enable spatial constraint regularizer in the symmetsry loss
-
-
-#     RESNET = "resnet50"
-#     TRAINING_AUGMENTATION = True
-#     SOURCE_WEIGHT = [3, 1, 1] #'ShapeNetTOI', 'Real', 'coco'
-
-#     # ID COORDS SURFACE_NORMALS DEPTH
-#     # 0    -        -            -
-#     # 1    X        -            -
-#     # 2    X        X            -
-#     # 3    -        -            X
-#     # 4    X        -            X
-#     # 5    X        X            X
-#     MODEL_MODE = 1
-
-
-class SomConfig(Config):
+class ChocConfig(Config):
     """Configuration for training on the toy shapes dataset.
     Derives from the base Config class and overrides values specific
     to the toy shapes dataset.
@@ -110,7 +34,7 @@ class SomConfig(Config):
     # Give the configuration a recognizable name
     NAME = "mySynthetic"
     # OBJ_MODEL_DIR = os.path.join(ROOT_DIR, 'data', 'obj_models')
-    OBJ_MODEL_DIR = "/media/DATA/SNOCS/obj_models"
+    OBJ_MODEL_DIR = ""
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
@@ -120,7 +44,7 @@ class SomConfig(Config):
     NUM_CLASSES = 1 + 4 # background + box, stem, non-stem + person
     #MEAN_PIXEL = np.array([[ 120.66209412, 114.70348358, 105.81269836]]) 
     #MEAN_PIXEL = np.array([[120.05344, 124.55048, 125.41634]])
-    MEAN_PIXEL = np.array([[127.15787, 131.24498, 133.48267]]) # SOM ICASSP
+    MEAN_PIXEL = np.array([[127.15787, 131.24498, 133.48267]]) # CHOC ICASSP
 
     IMAGE_MIN_DIM = 480
     IMAGE_MAX_DIM = 640
