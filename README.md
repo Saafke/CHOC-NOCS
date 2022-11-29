@@ -2,7 +2,11 @@
 
 ## A Mixed-Reality Dataset for Category-level 6D Pose and Size Estimation of Hand-occluded Containers
 
-The code is adapted from [Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation](https://github.com/hughw19/NOCS_CVPR2019/).
+This is the code to run the NOCS model trained on the CHOC mixed-reality dataset. The code is adapted from [Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation](https://github.com/hughw19/NOCS_CVPR2019/).
+
+[[dataset](https://zenodo.org/record/5085801#.Y3zGQ9LP2V4)]
+[[webpage](https://corsmal.eecs.qmul.ac.uk/pose.html)]
+[[arxiv pre-print](https://arxiv.org/abs/2211.10470)]
 
 ## Table of Contents
 
@@ -99,11 +103,9 @@ python3 train.py
 
 * Python 3.5 reached the end of its life on September 13th, 2020 [DEPRECATION]
 
-
 ## Enquiries, Question and Comments <a name="enquiries-question-and-comments"></a>
 
 If you have any further enquiries, question, or comments, or you would like to file a bug report or a feature request, use the Github issue tracker. 
-
 
 ## Licence <a name="license"></a>
 
