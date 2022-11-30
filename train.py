@@ -181,12 +181,12 @@ class NocsTraining():
 
 
     # SOM
-    def PrepareTrainingDataSOM(self):
+    def PrepareTrainingDataCHOC(self):
         print('Preparing training data...')
         # Create the TRAIN set
-        dataset_train = SOMDataset(self.dataset_classes.synset_names, 'train', self.config)
+        dataset_train = CHOCDataset(self.dataset_classes.synset_names, 'train', self.config)
 
-        dataset_train.load_SOM_scenes(self.som_dir, ["all"], 'train', args.calcmean)
+        dataset_train.load_CHOC_scenes(self.choc_dir, ["all"], 'train', args.calcmean)
         
         # NOTE: check sample number
         dataset_train.load_coco(self.coco_dir, 'train', class_names=self.dataset_classes.class_map.keys(),
@@ -198,13 +198,13 @@ class NocsTraining():
 
         return dataset_train
 
-    def PrepareValidationDataSOM(self):
+    def PrepareValidationDataCHOC(self):
         
         print('Preparing validation data...')
         
-        dataset_val = SOMDataset(self.dataset_classes.synset_names, 'val', self.config)
+        dataset_val = CHOCDataset(self.dataset_classes.synset_names, 'val', self.config)
 
-        dataset_val.load_SOM_scenes(self.som_dir, ["all"], 'val', args.calcmean)
+        dataset_val.load_choc_scenes(self.choc_dir, ["all"], 'val', args.calcmean)
         
         dataset_val.load_coco(self.coco_dir, 
                                 'val', 
@@ -253,9 +253,9 @@ class NocsTraining():
         if self.dataset == 'NOCS':
             dataset_train = self.PrepareNOCSTrainingData()
             dataset_val   = self.PrepareNOCSValidationData()
-        elif self.dataset == 'SOM':
-            dataset_train = self.PrepareTrainingDataSOM()
-            dataset_val   = self.PrepareValidationDataSOM()
+        elif self.dataset == 'CHOC':
+            dataset_train = self.PrepareTrainingDataCHOC()
+            dataset_val   = self.PrepareValidationDataCHOC()
 
         return dataset_train, dataset_val
 

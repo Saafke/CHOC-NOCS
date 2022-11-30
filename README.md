@@ -8,6 +8,13 @@ This is the code to run the NOCS model trained on the CHOC mixed-reality dataset
 [[webpage](https://corsmal.eecs.qmul.ac.uk/pose.html)]
 [[arxiv pre-print](https://arxiv.org/abs/2211.10470)]
 
+#### Changes
+
+Here, we detail the changes we made with respect to the original NOCS repository.
+
+- Change the dataloader and number of categories, to properly load images from the CHOC dataset.
+- Add [EPnP](https://www.tugraz.at/fileadmin/user_upload/Institute/ICG/Images/team_lepetit/publications/lepetit_ijcv08.pdf) as an alternative to Umeyama in the post-processing pose estimation step.
+
 ## Table of Contents
 
 1. [Installation](#installation)
@@ -23,41 +30,49 @@ This is the code to run the NOCS model trained on the CHOC mixed-reality dataset
 
 ### Requirements <a name="requirements"></a>
 
-This code has been tested on an Ubuntu 18.04 machine, CUDA 11.6 and CUDNN XXX, with the following libraries.
+This code has been tested on an Ubuntu 18.04 machine with CUDA 11.6 and cuDNN 7.5.0, and the following libraries.
 
 * Software/libraries:   
     - Python 3.5
     - Tensorflow 1.14.0
     - Keras 2.3.0
-    - Anaconda/Miniconda
-    - Open3D
+    - Anaconda/Miniconda 22.9.0
+    - Open3D 0.16.0
+    - SciPy 1.2.2
+    - OpenCV 4.4.0
+    - Sci-Kit 0.15.0
+
 
 ### Instructions <a name="instructions"></a>
 
-1. Install the following essentials:
+1. Install the essentials
 ```
 sudo apt-get update
 sudo apt-get install build-essential libssl-dev libffi-dev python-dev
 ```
 
-2. Setup the conda environment (optional but strongly recommended):
+2. Setup the conda environment (optional but strongly recommended)
 
 Install Anaconda or Miniconda (please follow: https://docs.conda.io/en/latest/miniconda.html#linux-installers).
 ```
 conda create --name choc-nocs-env python=3.5
 conda activate choc-nocs-env
+```
 
+3. Install the dependencies
+
+Make sure to upgrade pip first:
+```
 pip install --upgrade pip
+```
 
+Install the libraries as follows (if there are errors, try installing the libraries one at a time):
+```
 pip install tensorflow-gpu==1.14.0 keras==2.3.0
-```
-
-3. Install the following dependencies:
-```
 python3.5 -m pip install opencv-python moviepy open3d scipy scikit-image cython "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
 ```
 
-4. Verify install with CPU
+4. Verify installation with CPU
 ```
 python3 -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 ```
@@ -78,7 +93,7 @@ Arguments:
 - _pp_: post-processing technique to compute the 6D pose, _umeyama_ or _epnp_ (default: _umeyama_)
 - _draw_: boolean flag to visualise the results
 
-The input folder should be structured as follows (note that depth is optional):
+The input folder should be structured as follows (note that depth is optional - it's only necessary for the Umeyama post-processing):
 
 ```
 input_folder
@@ -95,8 +110,26 @@ input_folder
 We provide a sample in [_sample\_folder_](sample_folder).
 
 ## Training <a name="training"></a>
+
+You can re-train the NOCS-model on the CHOC or other dataset.
+
+The general command to run the training is:
 ```
-python3 train.py
+python train.py --dataset <dataset_type> --datapath <path_to_dataset> --modeldir <path_to_models> --weight_init_mode <weight_initialization> --gpu --calcmean
+```
+
+Arguments:
+
+- _dataset_: type of dataset; _CHOC_ or _NOCS_
+- _datapath_ : local path to the input folder
+- _modeldir_ : local path to the location of the stored models (usually /logs)
+- _weight\_init\_mode_: which weight initialisation technique, _imagenet_, _coco_ or _last_ (default: _last_)
+- _gpu_: boolean flag to use Graphical Processing Unit
+- _calcmean_ : boolean flag to calculate the RGB mean of the entire training dataset
+
+For simplification, we also add a bash script to run this command. You can change the variables for the arguments in the _run\_training.sh_ script and then run:
+```
+$ bash run_training.sh
 ```
 
 ## Known issues <a name="issues"></a>

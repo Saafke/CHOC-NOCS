@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-DATASET="SOM" # 'NOCS' or 'SOM'
+DATASET="CHOC" # 'NOCS' or 'CHOC'
 
 
 DATAPATH="/media/DATA/SOM_NOCS_DATA"
