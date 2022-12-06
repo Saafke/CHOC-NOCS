@@ -13,7 +13,7 @@ This is the code to run the NOCS model trained on the CHOC mixed-reality dataset
 Here, we detail the changes we made with respect to the original NOCS repository.
 
 - Change the dataloader and number of categories, to properly load images from the CHOC dataset.
-- Add [EPnP](https://www.tugraz.at/fileadmin/user_upload/Institute/ICG/Images/team_lepetit/publications/lepetit_ijcv08.pdf) as an alternative to Umeyama in the post-processing pose estimation step.
+- Add [EPnP](https://www.tugraz.at/fileadmin/user_upload/Institute/ICG/Images/team_lepetit/publications/lepetit_ijcv08.pdf) as an alternative to [Umeyama](https://web.stanford.edu/class/cs273/refs/umeyama.pdf) in the post-processing pose estimation step.
 
 ## Table of Contents
 
