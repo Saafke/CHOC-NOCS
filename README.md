@@ -2,6 +2,8 @@
 
 ## A Mixed-Reality Dataset for Category-level 6D Pose and Size Estimation of Hand-occluded Containers
 
+[![DOI](https://zenodo.org/badge/569785462.svg)](https://zenodo.org/badge/latestdoi/569785462)
+
 This is the code to run the NOCS model trained on the CHOC mixed-reality dataset. The code is adapted from [Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation](https://github.com/hughw19/NOCS_CVPR2019/).
 
 [[dataset](https://zenodo.org/record/5085801#.Y3zGQ9LP2V4)]
@@ -41,7 +43,6 @@ This code has been tested on an Ubuntu 18.04 machine with CUDA 11.6 and cuDNN 7.
     - SciPy 1.2.2
     - OpenCV 4.4.0
     - Sci-Kit 0.15.0
-
 
 ### Instructions <a name="instructions"></a>
 
