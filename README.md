@@ -9,6 +9,7 @@ This is the code to run the NOCS model trained on the CHOC mixed-reality dataset
 [[dataset](https://zenodo.org/record/5085801#.Y3zGQ9LP2V4)]
 [[webpage](https://corsmal.eecs.qmul.ac.uk/pose.html)]
 [[arxiv pre-print](https://arxiv.org/abs/2211.10470)]
+[[trained model](https://zenodo.org/record/7438646#.Y5oL49LP2V4)]
 
 #### Changes
 
@@ -79,7 +80,7 @@ python3 -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000,
 ```
 
 ## Running demo <a name="demo"></a>
-You can use the demo to run the model on your own RGB(-D optional) images. First, download the trained model from here (ADD LINK). 
+You can use the demo to run the model on your own RGB(-D optional) images. First, download the trained model from [here](https://zenodo.org/record/7438646#.Y5oL49LP2V4). 
 
 The general command to run the demo is:
 ```
